@@ -38,19 +38,12 @@ async def on_message(message):
         reply = f'{message.author.mention} 呼んだ？' # 返信文の作成
         await client.send_message(message.channel, reply) # 返信を送る
 
-    # if message.content.startswith('!summon'):
-    #     if client.is_voice_connected():
-    #         # voice = client.voice_client_in(message.channel)
-    #         pass
-    #     else:
-    #         voice = await client.join_voice_channel(client.get_channel(passToken.channelID))
-
     if message.content.startswith('!bgm'):
-        if client.is_voice_connected():
-            voice = client.voice_client_in(message.channel.server)
-            pass   
+        channel = client.get_channel(passToken.channelID)
+        if client.is_voice_connected(channel.server):
+            voice = client.voice_client_in(channel.server)
         else:
-            voice = await client.join_voice_channel(client.get_channel(passToken.channelID))
+            voice = await client.join_voice_channel(channel)
         player = voice.create_ffmpeg_player('b.mp3')
         player.start()
         
