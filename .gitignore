@@ -4,3 +4,6 @@ passToken.py
 Music.py
 bgm.mp3
 b.mp3
+/Music/
+.DS_Store
+音割れポッターBB.mp3
