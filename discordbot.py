@@ -79,9 +79,5 @@ async def on_message(message):
         player = voice.create_ffmpeg_player('potter.m4a')
         player.start()
         
-        # time.sleep(17)
-        # player.pause()
-        # sys.exit()
-        # voice.disconnect()
 # botの接続と起動
 client.run(passToken.token)
