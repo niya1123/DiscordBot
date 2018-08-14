@@ -11,7 +11,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    # voice = None    
+      
     #!nekoでにゃーんと答える.
     if message.content.startswith('!neko'):
         reply = 'にゃーん'
@@ -48,36 +48,23 @@ async def on_message(message):
         files = os.listdir(path)
         files_file = [f for f in files if os.path.isfile(os.path.join(path, f))]
 
-        # i = 1
-        # for i, f in enumerate(files_file):
-        #     if(f is ".DS_Store"):
-        #         pass
-        player = voice.create_ffmpeg_player('Music/' + files_file[1])
-        player.start()
+        #音楽を再生してるかどうか
+        playing_song = False
+        print(files_file)
+        while len(files_file) > 0:
+            if playing_song == False:
+                if(files_file[0] == ".DS_Store"):
+                    del files_file[0]
+                player = voice.create_ffmpeg_player('Music/' + files_file[0])
+                playing_song = True
+                player.start()
+                del files_file[0]
+                print(files_file)
+            elif player.is_done():
+                playing_song = False   
+            else:
+                await asyncio.sleep(1)
+                continue
 
-        #0の時は.DS_Store入るので無視
-        for i in range(len(files_file) - 2):
-            while player.is_done():
-                asyncio.sleep(10)
-            if i == 0:
-                pass
-            i = i+1
-            player = voice.create_ffmpeg_player('Music/' + files_file[i])
-            player.start()
-
-        
-        # player = voice.create_ffmpeg_player('Music/' + files_file[1])
-        # player.start()
-
-    if re.match(r'.*\?+', message.content) or re.match(r'.*\？+', message.content):  
-        channel = client.get_channel(passToken.channelID)
-        if client.is_voice_connected(channel.server):
-            voice = client.voice_client_in(channel.server)
-        else:
-            voice = await client.join_voice_channel(channel)
-        
-        player = voice.create_ffmpeg_player('potter.m4a')
-        player.start()
-        
 # botの接続と起動
 client.run(passToken.token)
