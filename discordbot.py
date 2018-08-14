@@ -1,5 +1,5 @@
 import discord # インストールした discord.py
-import passToken, os, time, sys, re
+import passToken, os, time, sys, re, asyncio
 from datetime import datetime
 # from .opus_loader import load_opus_lib
 client = discord.Client() # 接続に使用するオブジェクト
@@ -48,14 +48,26 @@ async def on_message(message):
         files = os.listdir(path)
         files_file = [f for f in files if os.path.isfile(os.path.join(path, f))]
 
-        # for f in files_file:
+        # i = 1
+        # for i, f in enumerate(files_file):
         #     if(f is ".DS_Store"):
         #         pass
-        #     player = voice.create_ffmpeg_player('Music/' + f)
-        #     player.start()
-        
         player = voice.create_ffmpeg_player('Music/' + files_file[1])
         player.start()
+
+        #0の時は.DS_Store入るので無視
+        for i in range(len(files_file) - 2):
+            while player.is_done():
+                asyncio.sleep(10)
+            if i == 0:
+                pass
+            i = i+1
+            player = voice.create_ffmpeg_player('Music/' + files_file[i])
+            player.start()
+
+        
+        # player = voice.create_ffmpeg_player('Music/' + files_file[1])
+        # player.start()
 
     if re.match(r'.*\?+', message.content) or re.match(r'.*\？+', message.content):  
         channel = client.get_channel(passToken.channelID)
@@ -64,7 +76,7 @@ async def on_message(message):
         else:
             voice = await client.join_voice_channel(channel)
         
-        player = voice.create_ffmpeg_player('potter.mp3')
+        player = voice.create_ffmpeg_player('potter.m4a')
         player.start()
         
         # time.sleep(17)
