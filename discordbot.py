@@ -1,5 +1,5 @@
 import discord # インストールした discord.py
-import passToken, os, time, sys
+import passToken, os, time, sys, re
 from datetime import datetime
 # from .opus_loader import load_opus_lib
 client = discord.Client() # 接続に使用するオブジェクト
@@ -57,18 +57,19 @@ async def on_message(message):
         player = voice.create_ffmpeg_player('Music/' + files_file[1])
         player.start()
 
-    if message.content.startswith('?') or message.content.startswith('？'):  
+    if re.match(r'.*\?+', message.content) or re.match(r'.*\？+', message.content):  
         channel = client.get_channel(passToken.channelID)
         if client.is_voice_connected(channel.server):
             voice = client.voice_client_in(channel.server)
         else:
             voice = await client.join_voice_channel(channel)
         
-        player = voice.create_ffmpeg_player('音割れポッターBB.mp3')
+        player = voice.create_ffmpeg_player('potter.mp3')
         player.start()
         
-        time.sleep(17)
-        sys.exit()
+        # time.sleep(17)
+        # player.pause()
+        # sys.exit()
         # voice.disconnect()
 # botの接続と起動
 client.run(passToken.token)
