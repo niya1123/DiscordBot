@@ -17,5 +17,8 @@ async def on_message(message):
         
         player = voice.create_ffmpeg_player('potter.m4a')
         player.start()
+
+        if(player.is_done()):
+            voice.disconnect()
         
 client.run(passToken.otoware_token)

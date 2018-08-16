@@ -69,5 +69,12 @@ async def on_message(message):
                 await asyncio.sleep(1)
                 continue
 
+    # 音声の切断
+    if message.content.startswith('!disconnect'):
+        channel = client.get_channel(passToken.channelID)
+        voice = client.voice_client_in(channel.server)
+        voice.disconnect()
+       
+
 # botの接続と起動
 client.run(passToken.token)
