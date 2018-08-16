@@ -44,6 +44,7 @@ async def on_message(message):
             voice = client.voice_client_in(channel.server)
         else:
             voice = await client.join_voice_channel(channel)
+
         path = "/Users/YK/Github/DiscordBot/Music"
         files = os.listdir(path)
         files_file = [f for f in files if os.path.isfile(os.path.join(path, f))]
@@ -56,6 +57,7 @@ async def on_message(message):
                 if(files_file[0] == ".DS_Store"):
                     del files_file[0]
                 player = voice.create_ffmpeg_player('Music/' + files_file[0])
+                player.volume = 0.05
                 playing_song = True
                 player.start()
                 del files_file[0]
