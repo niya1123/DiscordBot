@@ -38,6 +38,7 @@ async def on_message(message):
         reply = f'{message.author.mention} 呼んだ？' # 返信文の作成
         await client.send_message(message.channel, reply) # 返信を送る
 
+    # ローカルの音楽を流す
     if message.content.startswith('!bgm'):
         channel = client.get_channel(passToken.channelID)
         if client.is_voice_connected(channel.server):
