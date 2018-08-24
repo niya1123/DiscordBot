@@ -1,4 +1,4 @@
-import discord, passToken,re
+import discord, passToken, re, asyncio
 
 client = discord.Client()
 
@@ -18,7 +18,10 @@ async def on_message(message):
         player = voice.create_ffmpeg_player('potter.m4a')
         player.start()
 
-        if(player.is_done()):
-            voice.disconnect()
+        while not player.is_done():
+            await asyncio.sleep(1)
+
+
+
         
 client.run(passToken.otoware_token)

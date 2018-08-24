@@ -46,7 +46,7 @@ async def on_message(message):
         else:
             voice = await client.join_voice_channel(channel)
 
-        path = "/Users/YK/Github/DiscordBot/Music"
+        path = "./Music"
         files = os.listdir(path)
         files_file = [f for f in files if os.path.isfile(os.path.join(path, f))]
 
