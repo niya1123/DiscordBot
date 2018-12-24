@@ -1,5 +1,5 @@
 import discord # インストールした discord.py==1.0.0a
-import passToken, os, time, sys, re, asyncio, random, youtube_dl,subprocess
+import passToken, os, time, sys, re, asyncio, random,subprocess
 from datetime import datetime
 # from .opus_loader import load_opus_lib
 client = discord.Client() # 接続に使用するオブジェクト
@@ -16,7 +16,6 @@ async def on_message(message):
     files = os.listdir(path)
     files_file = [f for f in files if os.path.isfile(os.path.join(path, f))]
     channel = client.get_channel(passToken.voice_channel_id)
-    ff_name = ''
       
     #!nekoでにゃーんと答える.
     if message.content.startswith('!neko'):
