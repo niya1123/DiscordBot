@@ -49,6 +49,9 @@ async def on_message(message):
                 await asyncio.sleep(1)
                 continue
 
+    if message.content.startswith('!next'):
+        vc = message.guild.voice_client
+        vc.stop()
     if message.content.startswith('!disconnect'):
        for voice_client in client.voice_clients:
            await voice_client.disconnect()
