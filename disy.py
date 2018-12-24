@@ -56,10 +56,23 @@ async def on_message(message):
 
     if message.content.startswith('!dl'):
         url = message.content[4:]
-        cmd = 'youtube-dl -xo "./Music/' + url[-5:] + '.%(ext)s" --audio-format mp3 ' + url
-        ff_name = url[-5:] + '.mp3'
+        cmd = 'python ./dl.py ' + url
         subprocess.call(cmd, shell=True)
 
+    if re.match(r'.*\?+',message.content):
+        if re.search('http',message.content):
+            pass
+        else:
+            for voice_client in client.voice_clients:
+                await voice_client.disconnect()
+            vc = await channel.connect()
+            vc.play(discord.FFmpegPCMAudio('./potter/potter.m4a'), after=lambda e: print('done', e))
+            vc.source = discord.PCMVolumeTransformer(vc.source)
+            vc.source.volume = 0.3
+
+            while not vc.is_playing():
+                await asyncio.sleep(1)      
+        pass
     # if message.content.startswith('!ff'):
     #     for voice_client in client.voice_clients:
     #        await voice_client.disconnect()

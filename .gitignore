@@ -6,4 +6,6 @@ bgm.mp3
 b.mp3
 /Music/
 .DS_Store
-potter.m4a
+/potter/
+dl.py
+otoware.py
