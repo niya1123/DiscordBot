@@ -38,7 +38,7 @@ async def on_message(message):
                     del files_file[0]
                 vc.play(discord.FFmpegPCMAudio(path+files_file[0]), after=lambda e: print('done', e))
                 vc.source = discord.PCMVolumeTransformer(vc.source)
-                vc.source.volume *= 0.1
+                vc.source.volume = 0.1
                 playing_song = True
                 del files_file[0]
 
@@ -50,6 +50,7 @@ async def on_message(message):
                 continue
     if message.content.startswith('!volume'):
         vc = message.guild.voice_client
+        vc.source = discord.PCMVolumeTransformer(vc.source)
         vc.source.volume = int(message.content[8:])
 
     if message.content.startswith('!next'):
