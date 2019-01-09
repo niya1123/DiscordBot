@@ -50,8 +50,8 @@ async def on_message(message):
                 continue
     if message.content.startswith('!bolume'):
         vc = message.guild.voice_client
-        vc.source.volume = message.content[8:]
-        
+        vc.source.volume = int(message.content[8:])
+
     if message.content.startswith('!next'):
         vc = message.guild.voice_client
         vc.stop()
