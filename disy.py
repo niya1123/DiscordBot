@@ -38,7 +38,7 @@ async def on_message(message):
                     del files_file[0]
                 vc.play(discord.FFmpegPCMAudio(path+files_file[0]), after=lambda e: print('done', e))
                 vc.source = discord.PCMVolumeTransformer(vc.source)
-                vc.source.volume = 0.3
+                vc.source.volume = 0.03
                 playing_song = True
                 del files_file[0]
 
