@@ -63,14 +63,19 @@ async def on_message(message):
         subprocess.call(cmd, shell=True)
 
     if message.content.startswith('!dd'):
-        d_value = [int(s) for s in message.content[4:].split(" ")]
-        import random
-        dice_list = []
-        for i in range(d_value[0]):
-            dice_list.append(random.randint(1, d_value[1]))
-        dice_result = ', '.join([str(s) for s in dice_list])
-        result = "結果は["+dice_result+"]で出目の合計は"+str(sum(dice_list))
-        await message.channel.send(result)
+        try:
+            d_value = [int(s) for s in message.content[4:].split(" ")]
+            if len(d_value) > 2:
+                raise ValueError()
+            import random
+            dice_list = []
+            for i in range(d_value[0]):
+                dice_list.append(random.randint(1, d_value[1]))
+            dice_result = ', '.join([str(s) for s in dice_list])
+            result = "結果は["+dice_result+"]で出目の合計は"+str(sum(dice_list))
+            await message.channel.send(result)
+        except ValueError as e:
+             await message.channel.send("値が不正です.例えば, 1D6を振りたいなら「!dd 1 6」と入力してください.")
 
        
 
