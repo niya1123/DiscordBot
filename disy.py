@@ -1,5 +1,5 @@
-import discord # インストールした discord.py==1.0.0a
-import passToken, os, time, sys, re, asyncio, random,subprocess
+import discord # インストールした discord.py
+import passToken, os, time, sys, re, asyncio
 from datetime import datetime
 # from .opus_loader import load_opus_lib
 client = discord.Client() # 接続に使用するオブジェクト
@@ -17,7 +17,7 @@ async def on_message(message):
     files_file = [f for f in files if os.path.isfile(os.path.join(path, f))]
     channel = client.get_channel(passToken.voice_channel_id)
       
-    #!nekoでにゃーんと答える.
+     #!nekoでにゃーんと答える.
     if message.content.startswith('!neko'):
         reply = 'にゃーん'
         await message.channel.send(reply)
@@ -38,7 +38,7 @@ async def on_message(message):
                     del files_file[0]
                 vc.play(discord.FFmpegPCMAudio(path+files_file[0]), after=lambda e: print('done', e))
                 vc.source = discord.PCMVolumeTransformer(vc.source)
-                vc.source.volume = 0.1
+                vc.source.volume = 0.3
                 playing_song = True
                 del files_file[0]
 
@@ -48,14 +48,11 @@ async def on_message(message):
             else:
                 await asyncio.sleep(1)
                 continue
-    if message.content.startswith('!volume'):
-        vc = message.guild.voice_client
-        vc.source = discord.PCMVolumeTransformer(vc.source)
-        vc.source.volume = int(message.content[8:])
 
     if message.content.startswith('!next'):
         vc = message.guild.voice_client
         vc.stop()
+        
     if message.content.startswith('!disconnect'):
        for voice_client in client.voice_clients:
            await voice_client.disconnect()
@@ -65,35 +62,17 @@ async def on_message(message):
         cmd = 'python ./dl.py ' + url
         subprocess.call(cmd, shell=True)
 
-    if re.match(r'.*\?+',message.content):
-        if re.search('http',message.content):
-            pass
-        else:
-            for voice_client in client.voice_clients:
-                await voice_client.disconnect()
-            vc = await channel.connect()
-            vc.play(discord.FFmpegPCMAudio('./potter/potter.m4a'), after=lambda e: print('done', e))
-            vc.source = discord.PCMVolumeTransformer(vc.source)
-            vc.source.volume = 0.3
+    if message.content.startswith('!dd'):
+        d_value = [int(s) for s in message.content[4:].split(" ")]
+        import random
+        dice_list = []
+        for i in range(d_value[0]):
+            dice_list.append(random.randint(1, d_value[1]))
+        dice_result = ', '.join([str(s) for s in dice_list])
+        result = "結果は["+dice_result+"]で出目の合計は"+str(sum(dice_list))
+        await message.channel.send(result)
 
-            while not vc.is_playing():
-                await asyncio.sleep(1)      
-        pass
-    # if message.content.startswith('!ff'):
-    #     for voice_client in client.voice_clients:
-    #        await voice_client.disconnect()
-    #     vc = await channel.connect()
-    #     playing_song = False #音楽流しているかどうか
-    #     if playing_song == False:
-    #         vc.play(discord.FFmpegPCMAudio(path+ff_name), after=lambda e: print('done', e))
-    #         vc.source = discord.PCMVolumeTransformer(vc.source)
-    #         vc.source.volume = 0.3
-    #         playing_song = True
-    #     elif vc.is_playing() == False:
-    #         playing_song = False 
-    #     else:
-    #         await asyncio.sleep(1)
-       #permissionで死ぬ
+       
 
 # botの接続と起動
 client.run(passToken.token)
